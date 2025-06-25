@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26 FATAL_ERROR) # USE ANYTHING LESS THAN 3.27!!!!
+cmake_minimum_required(VERSION 3.31 FATAL_ERROR) # USE ANYTHING LESS THAN 3.27!!!!
 project(lt-df-oc-proba
         VERSION 1.0.0
         LANGUAGES CXX CUDA)
@@ -19,7 +19,7 @@ if(UNIX) # NOTE, UNIX returns true for both Linux and macOS
     endif()
 endif()
 
-set(TLL "${TORCH_LIBRARIES};${OpenCV_LIBS};nfd;onnxruntime::onnxruntime;DataFrame;Threads::Threads")
+set(TLL "${TORCH_LIBRARIES};${OpenCV_LIBS};nfd;onnxruntime::onnxruntime;DataFrame::DataFrame;Threads::Threads")
 
 # CUDA related settings
 if(LINUX)
@@ -66,11 +66,13 @@ add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/3rdparty/nfde")
 
 add_executable(${PROJECT_NAME}
     src/util/file-util.cc
-    src/util/image-util.cc
-    src/util/terminal-util.cc
     src/main.cc)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${TORCH_INCLUDE_DIRS} ${CMAKE_CURRENT_LIST_DIR}/include ${CMAKE_CURRENT_LIST_DIR}/include/util)
+target_include_directories(${PROJECT_NAME} PRIVATE
+    ${TORCH_INCLUDE_DIRS}
+    ${OpenCV_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_LIST_DIR}/include
+    ${CMAKE_CURRENT_LIST_DIR}/include/util)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${TLL})
 

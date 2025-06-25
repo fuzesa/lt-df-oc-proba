@@ -1,0 +1,28 @@
+{
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "containerEnv": {
+    "DISPLAY": "${localEnv:DISPLAY}"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools-extension-pack",
+        "vadimcn.vscode-lldb"
+      ]
+    }
+  },
+  "mounts": [
+    "src=/tmp/.X11-unix,dst=/tmp/.X11-unix,type=bind",
+    "source=/dev/dri,target=/dev/dri,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vision37-user",
+  "runArgs": [
+    "--gpus",
+    "all",
+    "--net=host",
+    "--ipc=host",
+    "--volume=${localEnv:HOME}/.Xauthority:/home/vision37-user/.Xauthority:ro"
+  ]
+}

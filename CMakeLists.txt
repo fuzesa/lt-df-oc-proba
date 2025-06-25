@@ -19,7 +19,7 @@ if(UNIX) # NOTE, UNIX returns true for both Linux and macOS
     endif()
 endif()
 
-set(TLL "${TORCH_LIBRARIES} ${OpenCV_LIBS} nfd onnxruntime::onnxruntime DataFrame Threads::Threads")
+set(TLL "${TORCH_LIBRARIES};${OpenCV_LIBS};nfd;onnxruntime::onnxruntime;DataFrame;Threads::Threads")
 
 # CUDA related settings
 if(LINUX)
@@ -41,12 +41,7 @@ if(LINUX)
     find_package(CUDAToolkit REQUIRED)
     message(STATUS "CUDA version: " ${CUDAToolkit_VERSION})
 
-    list(APPEND TLL
-        CUDA::cudart
-        CUDA::cublas
-        CUDA::cusolver
-        CUDA::curand
-        CUDA::cusparse)
+    list(APPEND TLL CUDA::cudart;CUDA::cublas;CUDA::cusolver;CUDA::curand;CUDA::cusparse)
     
     if(SCCACHE)
         set(CMAKE_CUDA_COMPILER_LAUNCHER "${SCCACHE}")
@@ -67,7 +62,7 @@ message(STATUS "CPP DataFrame version: " ${DataFrame_VERSION})
 
 add_definitions(-DASSETS_DIR="${CMAKE_SOURCE_DIR}/assets/")
 
-#add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/3rdparty/nfde")
+add_subdirectory("${CMAKE_CURRENT_LIST_DIR}/3rdparty/nfde")
 
 add_executable(${PROJECT_NAME}
     src/util/file-util.cc
